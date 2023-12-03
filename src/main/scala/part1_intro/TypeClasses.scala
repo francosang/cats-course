@@ -1,4 +1,4 @@
-package part1_recap
+package part1_intro
 
 /** Type classes allow to extend or add functionality
   * to closed types (std library or 3th party libraries)

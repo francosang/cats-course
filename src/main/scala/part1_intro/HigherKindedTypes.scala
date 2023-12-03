@@ -1,6 +1,6 @@
-package part1_recap
+package part1_intro
 
-import part1_recap.HigherKindedTypes.Combinator
+import part1_intro.HigherKindedTypes.Combinator
 
 import scala.concurrent.Future
 import scala.util.Try

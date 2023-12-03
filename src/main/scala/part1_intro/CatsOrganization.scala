@@ -1,4 +1,4 @@
-package part1_cats_intro
+package part1_intro
 
 /**
  * Most important functionalities are type classes.

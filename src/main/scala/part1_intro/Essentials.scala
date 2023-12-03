@@ -1,4 +1,4 @@
-package part1_recap
+package part1_intro
 
 import java.util.concurrent.Executors
 import scala.concurrent.duration.Duration
