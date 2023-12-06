@@ -11,9 +11,13 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.7:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.typelevel:cats-core_2.13:2.7.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.typelevel:cats-kernel_2.13:2.7.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.typelevel:simulacrum-scalafix-annotations_2.13:0.5.4:jar" level="project" />
+    <orderEntry type="library" name="sbt: co.fs2:fs2-core_2.13:3.9.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.3:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scodec:scodec-bits_2.13:1.1.38:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.typelevel:cats-core_2.13:2.10.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.typelevel:cats-effect-kernel_2.13:3.5.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.typelevel:cats-effect-std_2.13:3.5.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.typelevel:cats-effect_2.13:3.5.2:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.typelevel:cats-kernel_2.13:2.10.0:jar" level="project" />
   </component>
 </module>

@@ -3,6 +3,8 @@ package part2_abstract_math
 /** Semigroups COMBINE elements of the same type into one element of that type.
   *
   * Combine many elements of a type without specifying how they should be combined.
+  *
+  * Combine (|+|) is always associative
   */
 object Semigroups extends App {
 
