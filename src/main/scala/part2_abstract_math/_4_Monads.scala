@@ -1,6 +1,9 @@
 package part2_abstract_math
 
+import cats.Monad
+
 import java.util.concurrent.Executors
+import scala.annotation.tailrec
 import scala.concurrent.{ExecutionContext, Future}
 
 /** A Monad is a type class which abstracts over sequencing computations.
@@ -57,13 +60,15 @@ object _4_Monads extends App {
 
   trait CustomMonad[M[_]] {
     def pure[A](value: A): M[A]
-    def flat[A, B](ma: M[A])(f: A => M[B]): M[B]
+    def flatMap[A, B](ma: M[A])(f: A => M[B]): M[B]
+    def map[A, B](ma: M[A])(f: A => B): M[B] =
+      flatMap(ma)(a => pure(f(a)))
   }
 
   import cats.Monad
-  import cats.instances.option._ // implicit Monad[Option]
-  import cats.instances.list._ // implicit Monad[List]
-  import cats.instances.future._ // implicit Monad[Future]
+  import cats.instances.future._
+  import cats.instances.list._
+  import cats.instances.option._ // implicit Monad[Future]
 
   val optionMonad = Monad[Option]
   val anOption = optionMonad.pure(4)
@@ -102,7 +107,7 @@ object _4_Monads extends App {
   ): Future[(A, B)] =
     futureA.flatMap(a => futureB.map(b => (a, b)))
 
-  println("Specialized API:")
+  println("* Specialized API:")
   println(pairLists(numbersList, charsList))
   println(pairOptions(numberOption, charOption))
   println(pairFutures(numberFuture, charFuture).value)
@@ -113,9 +118,80 @@ object _4_Monads extends App {
   ): M[(A, B)] =
     monad.flatMap(ma)(a => monad.map(mb)(b => (a, b)))
 
-  println("Generic API:")
+  // TODO: pairs with for-comprehensions
+  import cats.syntax.flatMap._
+  import cats.syntax.functor._
+  def pairsFor[M[_], A, B](ma: M[A], mb: M[B])(implicit
+      monad: Monad[M]
+  ): M[(A, B)] =
+    for {
+      a <- ma
+      two <- mb
+    } yield (a, two)
+
+  def pairsForWithScopedMonad[M[_]: Monad, A, B](
+      ma: M[A],
+      mb: M[B]
+  ): M[(A, B)] =
+    for {
+      a <- ma
+      two <- mb
+    } yield (a, two)
+
+  println("* Generic API:")
   println(pairs(numbersList, charsList))
   println(pairs(numberOption, charOption))
   println(pairs(numberFuture, charFuture))
 
+  println("* Generic API using pairsFor:")
+  println(pairsFor(numbersList, charsList))
+  println(pairsFor(numberOption, charOption))
+  println(pairsFor(numberFuture, charFuture))
+
+  println("* Generic API using pairsForWithScopedMonad:")
+  println(pairsForWithScopedMonad(numbersList, charsList))
+  println(pairsForWithScopedMonad(numberOption, charOption))
+  println(pairsForWithScopedMonad(numberFuture, charFuture))
+
+  print(Extensions.transformedValue)
+
+}
+
+object Extensions {
+  case class Box[A](value: A)
+
+  // This is probably wrong, ignore.
+  // Just assume there is a monad for Box existing
+  implicit val boxMonad = new Monad[Box] {
+    override def pure[A](x: A): Box[A] = Box(x)
+
+    override def flatMap[A, B](fa: Box[A])(
+        f: A => Box[B]
+    ): Box[B] = f.apply(fa.value)
+
+    @tailrec
+    override def tailRecM[A, B](
+        a: A
+    )(f: A => Box[Either[A, B]]): Box[B] = f(a) match {
+      case Box(either) =>
+        either match {
+          case Left(a)  => tailRecM(a)(f)
+          case Right(b) => Box(b)
+        }
+    }
+  }
+
+  /*
+  Extension methods are provided in other packages
+   */
+  import cats.syntax.applicative._
+  val oneValid: Box[Int] = 1.pure[Box]
+
+  import cats.syntax.functor._
+  val twoValid: Box[Int] = oneValid.map(_ + 1)
+
+  import cats.syntax.flatMap._
+  val transformedValue: Box[Int] = oneValid.flatMap(x => (x + 1).pure[Box])
+
+  // The imports
 }
