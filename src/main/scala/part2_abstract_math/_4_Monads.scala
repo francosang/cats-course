@@ -83,7 +83,7 @@ object _4_Monads extends App {
   println(aTransformedOption)
   println(aList)
   println(aTransformedList)
-  println(aFuture.value)
+  println(aFuture)
   println(aTransformedFuture)
 
   // Specialized API
@@ -116,6 +116,6 @@ object _4_Monads extends App {
   println("Generic API:")
   println(pairs(numbersList, charsList))
   println(pairs(numberOption, charOption))
-  println(pairs(numberFuture, charFuture).value)
+  println(pairs(numberFuture, charFuture))
 
 }
