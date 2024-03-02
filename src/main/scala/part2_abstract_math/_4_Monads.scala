@@ -167,7 +167,7 @@ object Extensions {
 
     override def flatMap[A, B](fa: Box[A])(
         f: A => Box[B]
-    ): Box[B] = f.apply(fa.value)
+    ): Box[B] = f(fa.value)
 
     @tailrec
     override def tailRecM[A, B](
